@@ -1,23 +1,26 @@
-import logo from './logo.svg';
-import './App.css';
+import { useDispatch } from "react-redux";
+import AddForm from "./components/AddForm";
+import ListTodos from "./components/ListTodos";
+import { useEffect } from "react";
+import axios from 'axios'
+import { ToastContainer } from "react-toastify";
 
 function App() {
+  const dispatch = useDispatch();
+  useEffect(()=>{
+    axios.get('http://localhost:3004/todos')
+    .then((res)=>dispatch({
+      type:"SET_TODOS",
+      payload: res.data
+
+    }));
+  })
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <h1 className="text-light d-flex justify-content-center m-4">Todo List</h1>
+      <AddForm/>
+      <ListTodos/>
+      <ToastContainer/>
     </div>
   );
 }
